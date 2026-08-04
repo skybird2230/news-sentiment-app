@@ -195,7 +195,13 @@ def get_news_signals(force=False):
 # --------------------------------------------------------------------------
 
 CALENDAR_URL = "https://www.forexfactory.com/calendar?day=today"
-CAL_HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+CAL_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Referer": "https://www.forexfactory.com/",
+    "Connection": "keep-alive",
+}
 
 CURRENCY_TO_INDICES = {
     "USD": ["USA30", "USA100", "USA500"],
@@ -502,6 +508,22 @@ def api_news():
 @app.route("/api/calendar")
 def api_calendar():
     return jsonify(get_calendar_signals())
+
+
+@app.route("/api/calendar_debug")
+def api_calendar_debug():
+    """Diagnostic endpoint: shows raw fetch status so we can tell if
+    ForexFactory is blocking requests from this server."""
+    try:
+        resp = requests.get(CALENDAR_URL, headers=CAL_HEADERS, timeout=20)
+        return jsonify({
+            "status_code": resp.status_code,
+            "content_length": len(resp.text),
+            "contains_calendar_row": "calendar__row" in resp.text,
+            "first_500_chars": resp.text[:500],
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)})
 
 
 @app.route("/refresh")
