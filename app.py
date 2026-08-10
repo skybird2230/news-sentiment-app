@@ -38,8 +38,7 @@ INSTRUMENTS = [
 
 NEWS_SOURCES = [
     "https://www.newsnow.co.uk/h/Business+&+Finance/Currencies?type=ln",
-    "https://www.newsnow.co.uk/h/Business+&+Finance/Stock+Markets?type=ln",
-    "https://www.newsnow.co.uk/h/Business+&+Finance/Commodities?type=ln",
+    "https://www.newsnow.co.uk/h/Business+&+Finance/Markets/Stock+Market/Stock+Markets+%28World%29?type=ln",
 ]
 NEWS_HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
 
